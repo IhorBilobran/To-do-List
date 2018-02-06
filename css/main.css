@@ -51,7 +51,7 @@ li, ul, a, p, span, h1 {
           background-size: cover; }
   .main-wrapper .list-wrapper {
     height: 75vh;
-    width: 55vh;
+    width: 60vh;
     min-height: 430px;
     min-width: 280px;
     -webkit-box-shadow: 0px 19px 64px -1px #a9a6d0;
@@ -203,4 +203,6 @@ li, ul, a, p, span, h1 {
     .main-wrapper .list .goals-wrapper {
       font-size: 12px; }
     .main-wrapper .list .add-input {
-      width: 50%; } }
+      width: 50%; }
+      .main-wrapper .list .add-input input {
+        width: 160px; } }
