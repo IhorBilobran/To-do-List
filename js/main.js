@@ -4,22 +4,40 @@ $(document).ready(function(){
 		output = $('#output'),
 		toDoList = [];
 
+	if (localStorage.getItem('todo') != undefined) {
+		toDoList = JSON.parse(localStorage.getItem('todo'));
+	}	
+
+// по кліку додаю елемент в список і виводжу на екран
 	add.click(function(){
 		let value = input.val(),
-			temp = {};
+			temp = {},
+			i = toDoList.length;		
 
 		// need - {todo: 'Купити хліб', check: false}
 		temp.todo = value;
-		temp.check = false;
-		
-		let i = toDoList.length;
-		
 		// при кожному кліку індекс буде мінятись
 		toDoList[i] = temp;
 		
-		console.log(toDoList);
-		
+		//функція додавання мети в DOM
 		out();
+
+		localStorage.setItem('todo', JSON.stringify(toDoList));
+		// очищення інпута після вводу
+		input.val('');
+	});
+
+
+	// removing goal, хак з document дозволяє працювати з створеними
+	// через jquery елементами
+	$(document).on("click", '.delete', function(){
+		$(this).parent().remove();
+		let thisElement = $(this).prev().text()
+
+		// при кліку треба щоб з списку видалялась мета
+		// пройтись по списку і знайти матч обєкта і кікнути його
+		removeFromList(thisElement, toDoList);
+		console.log(toDoList)
 	});
 
 	function out(){
@@ -33,28 +51,20 @@ $(document).ready(function(){
 		
 		output.append(newElement);
 
-		console.log(out);
+		//console.log(out);
 		// output.append()
 	}
 
-
-
-
-	// removing goal, хак з document дозволяє працювати з створеними
-	// через jquery елементами
-	$(document).on("click", '.delete', function(){
-		$(this).parent().remove();
-		let thisElement = $(this).prev().text()
-
-		// при кліку треба щоб з списку видалялась мета
-
-		for (let key in toDoList) {
-			if (toDoList[key] == thisElement )
-			delete toDoList[key]
+	function removeFromList(element, list) {
+		for (let i = 0; i < list.length; i++) {
+			for (let key in list[i]) {
+				if( list[i][key] == element) {
+					return list.splice(i, 1);
+					break;
+				}
+			}
 		}
-		console.log(toDoList);
-
-	});
+	}
 
 	/* dont work
 	$('.delete').click(function(){
