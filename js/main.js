@@ -4,27 +4,34 @@ $(document).ready(function(){
 		output = $('#output'),
 		toDoList = [];
 
-	if (localStorage.getItem('todo') != undefined) {
-		toDoList = JSON.parse(localStorage.getItem('todo'));
-	}	
+	// перебираю localStorage i записую в масив його значення
+	for (let key in localStorage) {
+		if (key == 'length') {
+			break;
+		}
+		toDoList.push({todo: key})
+		out();
+	}
 
-// по кліку додаю елемент в список і виводжу на екран
+	console.log(toDoList)	
+
+	// по кліку додаю елемент в список і виводжу на екран
 	add.click(function(){
 		let value = input.val(),
 			temp = {},
 			i = toDoList.length;		
 
-		// need - {todo: 'Купити хліб', check: false}
-		temp.todo = value;
-		// при кожному кліку індекс буде мінятись
-		toDoList[i] = temp;
-		
-		//функція додавання мети в DOM
-		out();
+		if (value != '' || value == undefined || value != ' ') {	
+			temp.todo = value;
+			// при кожному кліку індекс буде мінятись
+			toDoList[i] = temp;
+			
+			//функція додавання мети в DOM
+			out();
+			localStorage.setItem(value, true);
 
-		localStorage.setItem('todo', JSON.stringify(toDoList));
-		// очищення інпута після вводу
-		input.val('');
+			input.val('');
+		}
 	});
 
 
@@ -34,10 +41,8 @@ $(document).ready(function(){
 		$(this).parent().remove();
 		let thisElement = $(this).prev().text()
 
-		// при кліку треба щоб з списку видалялась мета
-		// пройтись по списку і знайти матч обєкта і кікнути його
 		removeFromList(thisElement, toDoList);
-		console.log(toDoList)
+		localStorage.removeItem(thisElement);
 	});
 
 	function out(){
@@ -50,9 +55,6 @@ $(document).ready(function(){
 		newElement.find('p').text(out);
 		
 		output.append(newElement);
-
-		//console.log(out);
-		// output.append()
 	}
 
 	function removeFromList(element, list) {
@@ -65,10 +67,8 @@ $(document).ready(function(){
 			}
 		}
 	}
-
-	/* dont work
-	$('.delete').click(function(){
-		$(this).parent().remove();
-		console.log('clicked to empty')
-	});*/
+	
+	function toStorage(value) {
+		return	localStorage.setItem(value, true);
+	}
 });
