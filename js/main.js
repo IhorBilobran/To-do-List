@@ -4,11 +4,15 @@ $(document).ready(function(){
 		output = $('#output'),
 		toDoList = [];
 
-	// перебираю localStorage i записую в масив його значення
+	//перебираю localStorage i записую в масив його значення
+	//console.log(Object.keys(localStorage));
 	for (let key in localStorage) {
-		if (key == 'length') {
+
+		// key == key - for FireFox browser
+		if (key == 'length' || key == 'key') {
 			break;
 		}
+
 		toDoList.push({todo: key})
 		out();
 	}
@@ -17,8 +21,7 @@ $(document).ready(function(){
 
 	// по кліку додаю елемент в список і виводжу на екран
 	add.click(function(){
-		let value = input.val(),
-			temp = {},
+		let value = input.val(),			temp = {},
 			i = toDoList.length;		
 
 		if (value != '' || value == undefined || value != ' ') {	
@@ -57,6 +60,7 @@ $(document).ready(function(){
 		output.append(newElement);
 	}
 
+	// ********* add .forEach
 	function removeFromList(element, list) {
 		for (let i = 0; i < list.length; i++) {
 			for (let key in list[i]) {
@@ -69,6 +73,6 @@ $(document).ready(function(){
 	}
 	
 	function toStorage(value) {
-		return	localStorage.setItem(value, true);
+		return localStorage.setItem(value, true);
 	}
 });
